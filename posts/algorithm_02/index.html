@@ -7,11 +7,191 @@
 <meta name="robots" content="index, follow">
 <title>「Algorithm」02 Data Structure | Ming Blog</title>
 <meta name="keywords" content="Algorithm">
-<meta name="description" content="链表与邻接表：树与图的存储 栈与队列：单调队列、单调栈 kmp Trie 并查集 堆 Hash表 链表与邻接表：树与图的存储 用数组来模拟这些结构，不适用struct和STL。目的是为了提高效率
-1 2 3 4 5 6 7 struct Node { int val; Node * next; }; Node * p = new Node(); 面试题较多，但是new一个节点是比较慢的，做题不需要。
-用数组模拟单链表 最常用的邻接表，存储图和树。它们都是用邻接表存储的。
+<meta name="description" content="
+链表与邻接表：树与图的存储
+栈与队列：单调队列、单调栈
+kmp
+Trie
+并查集
+堆
+Hash表
+
+链表与邻接表：树与图的存储
+用数组来模拟这些结构，不适用struct和STL。目的是为了提高效率
+
+
+1
+2
+3
+4
+5
+6
+7
+
+
+struct Node
+{
+		int val;
+		Node * next;
+};
+
+Node * p = new Node();
+
+
+面试题较多，但是new一个节点是比较慢的，做题不需要。
+用数组模拟单链表
+最常用的邻接表，存储图和树。它们都是用邻接表存储的。
+
+
 以上是用数组e[N]和数组ne[N]来模拟单链表，如果是不存在，那么取-1。
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 #include&lt;iostream&gt; using namespace std; const int N = 1e5 &#43; 10; // head 表示头结点的下标 // e[i]是节点i的值 // ne[i] 是节点i的next指针 // idx是一个指针，指向当前用到的点。 int head, e[N], ne[N], idx; void init() { head = -1; idx = 0; } //将x插入到头结点 void add_to_head(int x) { e[idx] = x, ne[idx] = head, head = idx, idx &#43;&#43;; } //将x插入到下标是k的点的后面 void add(int k, int x) { e[idx] = x, ne[idx] = ne[k], ne[k] = idx, idx &#43;&#43;; } //删除k后面的节点 void remove(int k) { ne[k] = ne[ne[k]]; } int main() { int m; cin &gt;&gt; m; init(); while ( m --) { int k, x; char op; cin &gt;&gt; op; if (op == &#39;H&#39;) { cin &gt;&gt; x; add_to_head(x); } else if( op == &#39;D&#39;) { cin &gt;&gt; k; if (k == 0) head = ne[head]; else remove(k - 1); }else { cin &gt;&gt; k &gt;&gt; x; add(k - 1, x); } } for (int i = head; i !">
+
+
+ 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+
+
+#include&lt;iostream&gt;
+
+using namespace std; 
+
+const int N = 1e5 &#43; 10;
+
+// head 表示头结点的下标
+// e[i]是节点i的值
+// ne[i] 是节点i的next指针
+// idx是一个指针，指向当前用到的点。
+int head, e[N], ne[N], idx;
+
+void init()
+{
+    head = -1;
+    idx = 0;    
+}
+
+//将x插入到头结点
+void add_to_head(int x)
+{
+    e[idx] = x, ne[idx] = head, head = idx, idx &#43;&#43;;
+}
+
+//将x插入到下标是k的点的后面
+void add(int k, int x)
+{
+    e[idx] = x, ne[idx] = ne[k], ne[k] = idx, idx &#43;&#43;;   
+}
+
+//删除k后面的节点
+void remove(int k)
+{
+    ne[k] = ne[ne[k]];
+}
+
+int main()
+{
+    int m;
+    cin &gt;&gt; m;
+    
+    init();
+    while ( m --)
+    {
+        int k, x;
+        char op;
+        
+        cin &gt;&gt; op;
+        if (op == &#39;H&#39;)
+        {
+            cin &gt;&gt; x;
+            add_to_head(x);
+        }
+        else if( op ==  &#39;D&#39;)
+        {
+            cin &gt;&gt; k;
+            if (k == 0) head = ne[head];
+            else remove(k - 1);
+        }else {
+            cin &gt;&gt; k &gt;&gt; x;
+            add(k - 1, x);
+        }
+    }
+    
+    for (int i = head; i != -1; i = ne[i])
+        cout &lt;&lt; e[i] &lt;&lt; &#34; &#34;;
+    
+ 
+    return 0;   
+}
+
+
+用数组模拟双链表
+用来优化某些问题。">
 <meta name="author" content="">
 <link rel="canonical" href="https://imingx.github.io/posts/algorithm_02/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fc220c15db4aef0318bbf30adc45d33d4d7c88deff3238b23eb255afdc472ca6.css" integrity="sha256-/CIMFdtK7wMYu/MK3EXTPU18iN7/MjiyPrJVr9xHLKY=" rel="preload stylesheet" as="style">
@@ -59,15 +239,192 @@
         }
 
     </style>
-</noscript>
-  
+</noscript><meta property="og:title" content="「Algorithm」02 Data Structure" />
+<meta property="og:description" content="
+链表与邻接表：树与图的存储
+栈与队列：单调队列、单调栈
+kmp
+Trie
+并查集
+堆
+Hash表
 
-<meta property="og:title" content="「Algorithm」02 Data Structure" />
-<meta property="og:description" content="链表与邻接表：树与图的存储 栈与队列：单调队列、单调栈 kmp Trie 并查集 堆 Hash表 链表与邻接表：树与图的存储 用数组来模拟这些结构，不适用struct和STL。目的是为了提高效率
-1 2 3 4 5 6 7 struct Node { int val; Node * next; }; Node * p = new Node(); 面试题较多，但是new一个节点是比较慢的，做题不需要。
-用数组模拟单链表 最常用的邻接表，存储图和树。它们都是用邻接表存储的。
+链表与邻接表：树与图的存储
+用数组来模拟这些结构，不适用struct和STL。目的是为了提高效率
+
+
+1
+2
+3
+4
+5
+6
+7
+
+
+struct Node
+{
+		int val;
+		Node * next;
+};
+
+Node * p = new Node();
+
+
+面试题较多，但是new一个节点是比较慢的，做题不需要。
+用数组模拟单链表
+最常用的邻接表，存储图和树。它们都是用邻接表存储的。
+
+
 以上是用数组e[N]和数组ne[N]来模拟单链表，如果是不存在，那么取-1。
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 #include&lt;iostream&gt; using namespace std; const int N = 1e5 &#43; 10; // head 表示头结点的下标 // e[i]是节点i的值 // ne[i] 是节点i的next指针 // idx是一个指针，指向当前用到的点。 int head, e[N], ne[N], idx; void init() { head = -1; idx = 0; } //将x插入到头结点 void add_to_head(int x) { e[idx] = x, ne[idx] = head, head = idx, idx &#43;&#43;; } //将x插入到下标是k的点的后面 void add(int k, int x) { e[idx] = x, ne[idx] = ne[k], ne[k] = idx, idx &#43;&#43;; } //删除k后面的节点 void remove(int k) { ne[k] = ne[ne[k]]; } int main() { int m; cin &gt;&gt; m; init(); while ( m --) { int k, x; char op; cin &gt;&gt; op; if (op == &#39;H&#39;) { cin &gt;&gt; x; add_to_head(x); } else if( op == &#39;D&#39;) { cin &gt;&gt; k; if (k == 0) head = ne[head]; else remove(k - 1); }else { cin &gt;&gt; k &gt;&gt; x; add(k - 1, x); } } for (int i = head; i !" />
+
+
+ 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+
+
+#include&lt;iostream&gt;
+
+using namespace std; 
+
+const int N = 1e5 &#43; 10;
+
+// head 表示头结点的下标
+// e[i]是节点i的值
+// ne[i] 是节点i的next指针
+// idx是一个指针，指向当前用到的点。
+int head, e[N], ne[N], idx;
+
+void init()
+{
+    head = -1;
+    idx = 0;    
+}
+
+//将x插入到头结点
+void add_to_head(int x)
+{
+    e[idx] = x, ne[idx] = head, head = idx, idx &#43;&#43;;
+}
+
+//将x插入到下标是k的点的后面
+void add(int k, int x)
+{
+    e[idx] = x, ne[idx] = ne[k], ne[k] = idx, idx &#43;&#43;;   
+}
+
+//删除k后面的节点
+void remove(int k)
+{
+    ne[k] = ne[ne[k]];
+}
+
+int main()
+{
+    int m;
+    cin &gt;&gt; m;
+    
+    init();
+    while ( m --)
+    {
+        int k, x;
+        char op;
+        
+        cin &gt;&gt; op;
+        if (op == &#39;H&#39;)
+        {
+            cin &gt;&gt; x;
+            add_to_head(x);
+        }
+        else if( op ==  &#39;D&#39;)
+        {
+            cin &gt;&gt; k;
+            if (k == 0) head = ne[head];
+            else remove(k - 1);
+        }else {
+            cin &gt;&gt; k &gt;&gt; x;
+            add(k - 1, x);
+        }
+    }
+    
+    for (int i = head; i != -1; i = ne[i])
+        cout &lt;&lt; e[i] &lt;&lt; &#34; &#34;;
+    
+ 
+    return 0;   
+}
+
+
+用数组模拟双链表
+用来优化某些问题。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://imingx.github.io/posts/algorithm_02/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-10-12T00:30:02+08:00" />
@@ -75,11 +432,191 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="「Algorithm」02 Data Structure"/>
-<meta name="twitter:description" content="链表与邻接表：树与图的存储 栈与队列：单调队列、单调栈 kmp Trie 并查集 堆 Hash表 链表与邻接表：树与图的存储 用数组来模拟这些结构，不适用struct和STL。目的是为了提高效率
-1 2 3 4 5 6 7 struct Node { int val; Node * next; }; Node * p = new Node(); 面试题较多，但是new一个节点是比较慢的，做题不需要。
-用数组模拟单链表 最常用的邻接表，存储图和树。它们都是用邻接表存储的。
+<meta name="twitter:description" content="
+链表与邻接表：树与图的存储
+栈与队列：单调队列、单调栈
+kmp
+Trie
+并查集
+堆
+Hash表
+
+链表与邻接表：树与图的存储
+用数组来模拟这些结构，不适用struct和STL。目的是为了提高效率
+
+
+1
+2
+3
+4
+5
+6
+7
+
+
+struct Node
+{
+		int val;
+		Node * next;
+};
+
+Node * p = new Node();
+
+
+面试题较多，但是new一个节点是比较慢的，做题不需要。
+用数组模拟单链表
+最常用的邻接表，存储图和树。它们都是用邻接表存储的。
+
+
 以上是用数组e[N]和数组ne[N]来模拟单链表，如果是不存在，那么取-1。
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 #include&lt;iostream&gt; using namespace std; const int N = 1e5 &#43; 10; // head 表示头结点的下标 // e[i]是节点i的值 // ne[i] 是节点i的next指针 // idx是一个指针，指向当前用到的点。 int head, e[N], ne[N], idx; void init() { head = -1; idx = 0; } //将x插入到头结点 void add_to_head(int x) { e[idx] = x, ne[idx] = head, head = idx, idx &#43;&#43;; } //将x插入到下标是k的点的后面 void add(int k, int x) { e[idx] = x, ne[idx] = ne[k], ne[k] = idx, idx &#43;&#43;; } //删除k后面的节点 void remove(int k) { ne[k] = ne[ne[k]]; } int main() { int m; cin &gt;&gt; m; init(); while ( m --) { int k, x; char op; cin &gt;&gt; op; if (op == &#39;H&#39;) { cin &gt;&gt; x; add_to_head(x); } else if( op == &#39;D&#39;) { cin &gt;&gt; k; if (k == 0) head = ne[head]; else remove(k - 1); }else { cin &gt;&gt; k &gt;&gt; x; add(k - 1, x); } } for (int i = head; i !"/>
+
+
+ 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+
+
+#include&lt;iostream&gt;
+
+using namespace std; 
+
+const int N = 1e5 &#43; 10;
+
+// head 表示头结点的下标
+// e[i]是节点i的值
+// ne[i] 是节点i的next指针
+// idx是一个指针，指向当前用到的点。
+int head, e[N], ne[N], idx;
+
+void init()
+{
+    head = -1;
+    idx = 0;    
+}
+
+//将x插入到头结点
+void add_to_head(int x)
+{
+    e[idx] = x, ne[idx] = head, head = idx, idx &#43;&#43;;
+}
+
+//将x插入到下标是k的点的后面
+void add(int k, int x)
+{
+    e[idx] = x, ne[idx] = ne[k], ne[k] = idx, idx &#43;&#43;;   
+}
+
+//删除k后面的节点
+void remove(int k)
+{
+    ne[k] = ne[ne[k]];
+}
+
+int main()
+{
+    int m;
+    cin &gt;&gt; m;
+    
+    init();
+    while ( m --)
+    {
+        int k, x;
+        char op;
+        
+        cin &gt;&gt; op;
+        if (op == &#39;H&#39;)
+        {
+            cin &gt;&gt; x;
+            add_to_head(x);
+        }
+        else if( op ==  &#39;D&#39;)
+        {
+            cin &gt;&gt; k;
+            if (k == 0) head = ne[head];
+            else remove(k - 1);
+        }else {
+            cin &gt;&gt; k &gt;&gt; x;
+            add(k - 1, x);
+        }
+    }
+    
+    for (int i = head; i != -1; i = ne[i])
+        cout &lt;&lt; e[i] &lt;&lt; &#34; &#34;;
+    
+ 
+    return 0;   
+}
+
+
+用数组模拟双链表
+用来优化某些问题。"/>
 
 
 <script type="application/ld+json">
@@ -108,7 +645,7 @@
   "@type": "BlogPosting",
   "headline": "「Algorithm」02 Data Structure",
   "name": "「Algorithm」02 Data Structure",
-  "description": "链表与邻接表：树与图的存储 栈与队列：单调队列、单调栈 kmp Trie 并查集 堆 Hash表 链表与邻接表：树与图的存储 用数组来模拟这些结构，不适用struct和STL。目的是为了提高效率\n1 2 3 4 5 6 7 struct Node { int val; Node * next; }; Node * p = new Node(); 面试题较多，但是new一个节点是比较慢的，做题不需要。\n用数组模拟单链表 最常用的邻接表，存储图和树。它们都是用邻接表存储的。\n以上是用数组e[N]和数组ne[N]来模拟单链表，如果是不存在，那么取-1。\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 #include\u0026lt;iostream\u0026gt; using namespace std; const int N = 1e5 + 10; // head 表示头结点的下标 // e[i]是节点i的值 // ne[i] 是节点i的next指针 // idx是一个指针，指向当前用到的点。 int head, e[N], ne[N], idx; void init() { head = -1; idx = 0; } //将x插入到头结点 void add_to_head(int x) { e[idx] = x, ne[idx] = head, head = idx, idx ++; } //将x插入到下标是k的点的后面 void add(int k, int x) { e[idx] = x, ne[idx] = ne[k], ne[k] = idx, idx ++; } //删除k后面的节点 void remove(int k) { ne[k] = ne[ne[k]]; } int main() { int m; cin \u0026gt;\u0026gt; m; init(); while ( m --) { int k, x; char op; cin \u0026gt;\u0026gt; op; if (op == \u0026#39;H\u0026#39;) { cin \u0026gt;\u0026gt; x; add_to_head(x); } else if( op == \u0026#39;D\u0026#39;) { cin \u0026gt;\u0026gt; k; if (k == 0) head = ne[head]; else remove(k - 1); }else { cin \u0026gt;\u0026gt; k \u0026gt;\u0026gt; x; add(k - 1, x); } } for (int i = head; i !",
+  "description": " 链表与邻接表：树与图的存储 栈与队列：单调队列、单调栈 kmp Trie 并查集 堆 Hash表 链表与邻接表：树与图的存储 用数组来模拟这些结构，不适用struct和STL。目的是为了提高效率\n1 2 3 4 5 6 7 struct Node { int val; Node * next; }; Node * p = new Node(); 面试题较多，但是new一个节点是比较慢的，做题不需要。\n用数组模拟单链表 最常用的邻接表，存储图和树。它们都是用邻接表存储的。\n以上是用数组e[N]和数组ne[N]来模拟单链表，如果是不存在，那么取-1。\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 #include\u0026lt;iostream\u0026gt; using namespace std; const int N = 1e5 + 10; // head 表示头结点的下标 // e[i]是节点i的值 // ne[i] 是节点i的next指针 // idx是一个指针，指向当前用到的点。 int head, e[N], ne[N], idx; void init() { head = -1; idx = 0; } //将x插入到头结点 void add_to_head(int x) { e[idx] = x, ne[idx] = head, head = idx, idx ++; } //将x插入到下标是k的点的后面 void add(int k, int x) { e[idx] = x, ne[idx] = ne[k], ne[k] = idx, idx ++; } //删除k后面的节点 void remove(int k) { ne[k] = ne[ne[k]]; } int main() { int m; cin \u0026gt;\u0026gt; m; init(); while ( m --) { int k, x; char op; cin \u0026gt;\u0026gt; op; if (op == \u0026#39;H\u0026#39;) { cin \u0026gt;\u0026gt; x; add_to_head(x); } else if( op == \u0026#39;D\u0026#39;) { cin \u0026gt;\u0026gt; k; if (k == 0) head = ne[head]; else remove(k - 1); }else { cin \u0026gt;\u0026gt; k \u0026gt;\u0026gt; x; add(k - 1, x); } } for (int i = head; i != -1; i = ne[i]) cout \u0026lt;\u0026lt; e[i] \u0026lt;\u0026lt; \u0026#34; \u0026#34;; return 0; } 用数组模拟双链表 用来优化某些问题。\n",
   "keywords": [
     "Algorithm"
   ],
